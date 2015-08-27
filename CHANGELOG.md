@@ -1,4 +1,19 @@
-## Unreleased
+## v2.0.0 27 August 2015
+
+*Breaking changes*
+
+- Unset most_recent after before transitions
+  - TL;DR: set `autosave: false` on the `has_many` association between your parent and transition model and this change will almost certainly not affect your integration
+  - Previously the `most_recent` flag would be set to `false` on all transitions during any `before_transition` callbacks
+  - After this change, the `most_recent` flag will still be `true` for the previous transition during these callbacks
+  - Whilst this behaviour is almost certainly what your integration already expected, as a result of it any attempt to save the new, as yet unpersisted, transition during a `before_transition` callback will result in a uniqueness error. In particular, if you have not set `autosave: false` on the `has_many` association between your parent and transition model then any attempt to save the parent model during a `before_transition` will result in an error
+- Require a most_recent column on transition tables
+  - The `most_recent` column, added in v1.2.0, is now required on all transition tables
+  - This greatly speeds up queries on large tables
+  - A zero-downtime migration path is outlined in the changelog for v1.2.0. You should use that migration path **before** upgrading to v2.0.0
+
+*Changes*
+
 - Add after_destroy hook to ActiveRecord transition model templates
 
 ## v1.3.1 2 July 2015
