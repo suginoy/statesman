@@ -199,7 +199,7 @@ module Statesman
     end
 
     def last_transition
-      @storage_adapter.last
+      history.last
     end
 
     def can_transition_to?(new_state, metadata = {})
